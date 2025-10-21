@@ -15,7 +15,7 @@ public class BombFeature : MonoBehaviour
 
     private void Update()
     {
-        // Eðer bomb kullanýmý sona ermiþ ve objeler yükselmiþse, eski pozisyonlarýna döndür
+        
         if (!gameManagerSO.isBombUsed && areSpheresRaised)
         {
             ResetSpherePosition();
@@ -55,14 +55,14 @@ public class BombFeature : MonoBehaviour
 
         if (!areSpheresRaised)
         {
-            SphereObjectsFromScene(); // Sahnedeki objeleri listele ve orijinal Y'lerini kaydet
-            RaiseSpheres();            // Objeleri yükselt
+            SphereObjectsFromScene(); 
+            RaiseSpheres();            
         }
 
         gameManagerSO.isBombUsed = true;
     }
 
-    // Sahnedeki tüm FallingObject tag'li objeleri listele ve Y pozisyonlarýný kaydet
+    // Sahnedeki tüm FallingObject tag'li objeleri listeler
     void SphereObjectsFromScene()
     {
         fallingObjects.Clear();
@@ -80,7 +80,7 @@ public class BombFeature : MonoBehaviour
         }
     }
 
-    // Objeleri yükselt
+    // Objeleri yükseltir
     void RaiseSpheres()
     {
         for (int i = 0; i < fallingObjects.Count; i++)
@@ -93,7 +93,7 @@ public class BombFeature : MonoBehaviour
         areSpheresRaised = true;
     }
 
-    // Objeleri eski pozisyonlarýna getir
+    // Objeleri eski y pozisyonlarýna getirir
     void ResetSpherePosition()
     {
         for (int i = 0; i < fallingObjects.Count; i++)
@@ -114,20 +114,18 @@ public class BombFeature : MonoBehaviour
     {
         if (touchedObject == null) return;
 
-        // Sahnedeki tüm ColorMatcher bloklarýný kontrol et
         ColorMatcher[] allBlocks = Object.FindObjectsByType<ColorMatcher>(FindObjectsSortMode.None);
         foreach (ColorMatcher block in allBlocks)
         {
             if (block.objects.Contains(touchedObject))
             {
-                block.objects.Remove(touchedObject); // Listeden kaldýr
-                Destroy(touchedObject);               // Sahneden yok et
+                block.objects.Remove(touchedObject); 
+                Destroy(touchedObject);               
 
-                // Eðer block üzerinde text veya destroy metodlarý varsa çaðýr
                 block.BlockText();
                 block.DestroyBlock();
 
-                break; // Bulundu, diðer bloklara bakmaya gerek yok
+                break; 
             }
         }
     }
