@@ -89,4 +89,14 @@ public class GameManagerSO : ScriptableObject
         }
     }
     #endregion
+
+    #region PLAYER STATE
+    public enum PlayerState
+    {
+        Normal,
+        TargetingBomb,
+        TargetingMagnet
+    }
+
+    #endregion
 }
