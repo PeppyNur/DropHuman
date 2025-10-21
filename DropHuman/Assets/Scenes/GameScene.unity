@@ -1270,6 +1270,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 206902151}
+    - target: {fileID: 3887210989253315239, guid: 52409946def3e08469eb208bff68463f, type: 3}
+      propertyPath: GameManager
+      value: 
+      objectReference: {fileID: 1965193597}
     - target: {fileID: 7081650596217855857, guid: 52409946def3e08469eb208bff68463f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_Target
       value: 

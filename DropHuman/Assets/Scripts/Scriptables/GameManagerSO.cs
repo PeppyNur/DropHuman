@@ -60,7 +60,11 @@ public class GameManagerSO : ScriptableObject
     public bool isVibrating;
     public bool isSoundOn;
 
-
+    // ==================== FEATURE SETTINGS ====================
+    [Header("FEATURE SETTINGS")]
+    public bool isFrozenUsed;
+    [Space(5)]
+    public float frozenTime;
     // ==================== TIMER MANAGEMENT ====================
     #region Timer Management
     public void SetTimerByLevelType()

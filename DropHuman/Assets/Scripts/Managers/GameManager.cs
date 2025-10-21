@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
 
     public void StartLevelTimer()
     {
-        if (gameManagerSO.isGameStart && !gameManagerSO.isGamePause)
+        if (gameManagerSO.isGameStart && !gameManagerSO.isGamePause&& !gameManagerSO.isFrozenUsed)
         {
             if (gameManagerSO.currentLevelTimer > 0)
             {

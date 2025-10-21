@@ -7255,7 +7255,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5529791006557572270}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3887210989253315239}
+        m_TargetAssemblyTypeName: FrozenFeature, Assembly-CSharp
+        m_MethodName: FrozeTime
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3088061806478509306
 GameObject:
   m_ObjectHideFlags: 0
@@ -9438,6 +9450,7 @@ GameObject:
   - component: {fileID: 2723358771041645411}
   - component: {fileID: 545206899535044817}
   - component: {fileID: 2942552440319172360}
+  - component: {fileID: 3887210989253315239}
   m_Layer: 5
   m_Name: Froze
   m_TagString: Untagged
@@ -9503,6 +9516,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3887210989253315239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4275734621000750812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4ffe759493c37a41bf1f3766caec407, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameManager: {fileID: 0}
+  gameManagerSO: {fileID: 11400000, guid: e6ca73b6dfa3c9743849813fabca06d2, type: 2}
 --- !u!1 &4310718316599557926
 GameObject:
   m_ObjectHideFlags: 0
