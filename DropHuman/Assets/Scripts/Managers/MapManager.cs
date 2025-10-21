@@ -16,7 +16,6 @@ public class MapManager : MonoBehaviour
 
     #region MAP GENERATOR
 
-    // Kaydedilmiş seviyeyi yükler, eğer mevcutsa aynı prefab'ı tekrar oluşturur
     public void LoadSavedLevel()
     {
         if (gameManagerSO.savedLevel > 0 && gameManagerSO.currentLife > 0)
@@ -28,20 +27,26 @@ public class MapManager : MonoBehaviour
                 ClearCurrentMap();
 
                 currentMapInstance = Instantiate(gameManagerSO.currentMap, Vector3.zero, Quaternion.identity);
-                gameManagerSO.SetTimerByLevelType();
-                gameManagerSO.isGameStart = true;
+
+                StartCoroutine(StartGameAfterMapLoad());
             }
             else
             {
                 Debug.LogWarning("Kayıtlı currentMap bulunamadı, yeni map yüklenecek.");
                 LoadNextLevel();
-                gameManagerSO.isGameStart = true;
-
             }
         }
     }
 
-    // Yeni bir seviye yüklendiğinde uygun haritayı seçip oluşturur
+    private IEnumerator StartGameAfterMapLoad()
+    {
+        yield return new WaitForEndOfFrame();
+
+        gameManagerSO.SetTimerByLevelType();
+
+        Debug.Log("KAYITLI MAP YÜKLENDİ ve TIMER BAŞLADI");
+    }
+
     public void LoadNextLevel()
     {
         if (gameManagerSO.currentLife > 0)
@@ -54,7 +59,6 @@ public class MapManager : MonoBehaviour
             {
                 currentMapInstance = Instantiate(nextMapPrefab, Vector3.zero, Quaternion.identity);
 
-                // Mevcut map ve level bilgilerini kaydeder
                 gameManagerSO.currentMap = nextMapPrefab;
                 gameManagerSO.savedLevel = gameManagerSO.currentLevel;
 
@@ -68,7 +72,6 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    // Sıradaki map prefab'ını seviyeye göre belirler
     private GameObject SelectNextMap()
     {
         if (gameManagerSO.currentLevel < gameManagerSO.trainingLevelMaps.Count)
@@ -100,7 +103,6 @@ public class MapManager : MonoBehaviour
         return null;
     }
 
-    // Mevcut haritayı ve sahnedeki düşen objeleri temizler
     public void ClearCurrentMap()
     {
         if (currentMapInstance != null)

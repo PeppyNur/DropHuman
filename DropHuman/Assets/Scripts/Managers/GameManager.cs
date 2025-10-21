@@ -14,13 +14,13 @@ public class GameManager : MonoBehaviour
     public UIEventSO uiEventSO;
     public List<GameObject> blocks;
     public UIManager uiManager;
+    [SerializeField] private bool reviveClicked;
     #endregion
 
     private void Start()
     {
         gameManagerSO.isGameStart = false;
         gameManagerSO.isGameWin = false;
-        gameManagerSO.isGamePause = false;
         gameManagerSO.isGameOver = false;
         gameManagerSO.SetTimerByLevelType();
 
@@ -100,23 +100,35 @@ public class GameManager : MonoBehaviour
             CheckGameStatus();
         }
 
+        if(reviveClicked==true)
+        {
+            if (gameManagerSO.isGameStart && !gameManagerSO.isGamePause)
+            {
+                if (gameManagerSO.currentLevelTimer > 0)
+                {
+                    gameManagerSO.currentLevelTimer -= Time.deltaTime;
+                    uiManager.UpdateTimerText();
+                }
+                else
+                {
+                    gameManagerSO.currentLevelTimer = 0; // Sayacı 0'da sabitle
+                }
+                // --- BİTTİ ---
+
+                FindAllBlocks();
+
+                CheckGameStatus();
+            }
+        }
     }
     public void AddPlayTime()
     {
-        gameManagerSO.currentLevelTimer = gameManagerSO.addReviveTimer;
+        reviveClicked=true;
+        gameManagerSO.currentLevelTimer = gameManagerSO.trainingLevelTimer;
         gameManagerSO.isGameStart = true;
         gameManagerSO.isGamePause = false;
         gameManagerSO.isGameWin = false;
         gameManagerSO.isGameOver = false;
         Debug.Log("BUTONA TIKLANDI");
-    }
-
-    private void OnApplicationQuit()
-    {
-        SaveExitTime();
-        if (gameManagerSO.isGameOver || gameManagerSO.isGameStart || gameManagerSO.isGamePause)
-        {
-            gameManagerSO.currentLife--;
-        }
     }
 }
