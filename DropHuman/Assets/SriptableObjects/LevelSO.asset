@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43dfa4ba25909b94c9a1d99a8e395921, type: 3}
+  m_Name: LevelSO
+  m_EditorClassIdentifier: 
+  currentLevelType: 2
+  currentLevel: 11
+  savedLevel: 11
+  trainingLevelTimer: 10
+  normalLevelTimer: 20
+  hardLevelTimer: 30
+  currentLevelTimer: 3.1039248
+  reviveLevelTimer: 10
+  lifeCountdown: 15
+  currentLife: 5
+  maxLife: 5
+  currentMap: {fileID: 3085819932851563705, guid: f5be1b6cfab023040b7ddcc6c9a2a2dc, type: 3}
+  trainingLevelMaps:
+  - {fileID: 3085819932851563705, guid: 76a980749de51de48b5d761ec7590b54, type: 3}
+  normalLevelMaps:
+  - {fileID: 3085819932851563705, guid: b8165eb3e2e12f248b25cc239a9775a1, type: 3}
+  hardLevelMaps:
+  - {fileID: 3085819932851563705, guid: f5be1b6cfab023040b7ddcc6c9a2a2dc, type: 3}
+  currentCoin: 30
+  trainingLevelCoin: 10
+  normalLevelCoin: 20
+  hardLevelCoin: 30
+  reviveCoin: 100
+  isGameOver: 0
+  isGameWin: 0
+  isGameStart: 1
+  isGamePause: 0
+  isVibrating: 0
+  isSoundOn: 0
