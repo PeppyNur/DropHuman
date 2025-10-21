@@ -44,27 +44,34 @@ public class MapManager : MonoBehaviour
     // Yeni bir seviye yüklendiğinde uygun haritayı seçip oluşturur
     public void LoadNextLevel()
     {
-        if (gameManagerSO.currentLife > 0)
+        if(gameManagerSO.currentMap == null)
         {
-            ClearCurrentMap();
-
-            GameObject nextMapPrefab = SelectNextMap();
-
-            if (nextMapPrefab != null)
+            if (gameManagerSO.currentLife > 0)
             {
-                currentMapInstance = Instantiate(nextMapPrefab, Vector3.zero, Quaternion.identity);
+                ClearCurrentMap();
 
-                // Mevcut map ve level bilgilerini kaydeder
-                gameManagerSO.currentMap = nextMapPrefab;
-                gameManagerSO.savedLevel = gameManagerSO.currentLevel;
+                GameObject nextMapPrefab = SelectNextMap();
 
-                gameManagerSO.SetTimerByLevelType();
-                gameManagerSO.isGameStart = true;
+                if (nextMapPrefab != null)
+                {
+                    currentMapInstance = Instantiate(nextMapPrefab, Vector3.zero, Quaternion.identity);
+
+                    // Mevcut map ve level bilgilerini kaydeder
+                    gameManagerSO.currentMap = nextMapPrefab;
+                    gameManagerSO.savedLevel = gameManagerSO.currentLevel;
+
+                    gameManagerSO.SetTimerByLevelType();
+                    gameManagerSO.isGameStart = true;
+                }
+                else
+                {
+                    Debug.LogWarning("Map prefab bulunamadı!");
+                }
             }
-            else
-            {
-                Debug.LogWarning("Map prefab bulunamadı!");
-            }
+        }
+        else
+        {
+            LoadSavedLevel();
         }
     }
 

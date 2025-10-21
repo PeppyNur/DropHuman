@@ -318,6 +318,7 @@ public class UIManager : MonoBehaviour
             UpdateWinUI(reward);
 
             gameManagerSO.isGameStart = false;
+            gameManagerSO.currentMap=null;
         }
     }
 
