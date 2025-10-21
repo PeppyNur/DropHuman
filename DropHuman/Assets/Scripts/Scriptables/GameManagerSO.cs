@@ -22,7 +22,7 @@ public class GameManagerSO : ScriptableObject
     public float normalLevelTimer;
     public float hardLevelTimer;
     public float currentLevelTimer;
-    public float reviveLevelTimer;
+    public float addReviveTimer;
 
 
     // ==================== LIFE SETTINGS ====================

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,36 +14,51 @@ public class UIManager : MonoBehaviour
     public GameManager gameManager;
     public MapManager mapManager;
 
-    [Header("MENU PANEL COMPONENTS")]
-    //Home Panel
+    [Header("HOME PANEL COMPONENTS")]
     public GameObject homePanelUIObject;
+
+    // Buttons
+    [Space(5)]
     public Button playButton;
     public Button restartButton;
+
+    // Texts
+    [Space(5)]
     public TextMeshProUGUI[] homeLevelTexts;
     public TextMeshProUGUI lifeCountText;
     public TextMeshProUGUI lifeCountdownText;
     public TextMeshProUGUI coinCountText;
-    public GameObject coinCountObject; // gerekli her yerde aktif edilecek.
-    public GameObject lifeObject; // gerekli her yerde aktif edilecek.
 
-    //Settings Panel
+    // UI Objects
+    [Space(5)]
+    public GameObject coinObject; 
+    public GameObject lifeObject;      
+
+    [Header("SETTINGS PANEL COMPONENTS")]
     public Toggle vibrationToggle;
     public Toggle soundToggle;
 
-    [Header("WIN/LOSE PANEL")]
+    [Header("WIN / LOSE PANELS")]
     public GameObject loseUIObject;
     public GameObject winUIObject;
+
+    // In-Game Related Panels
+    [Space(5)]
     public GameObject inGamePanel;
     public GameObject revivePanel;
-    public GameObject reviveButton;
+
+    [Space(5)]
+    public Button reviveButton;
     public TextMeshProUGUI rewardCoinText;
     public TextMeshProUGUI reviveCoinText;
-    public TextMeshProUGUI reviveTimeText;
+    public TextMeshProUGUI reviveTimerText;
 
-    [Header("IN GAME PANEL")]
-    //In game panel
+    [Header("IN-GAME PANEL COMPONENTS")]
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI levelCountdownTimerText;
+
+    // Feature Texts
+    [Space(5)]
     public TextMeshProUGUI frozeFeatureText;
     public TextMeshProUGUI bombFeatureText;
     public TextMeshProUGUI magnetFeatureText;
@@ -57,17 +71,10 @@ public class UIManager : MonoBehaviour
         UpdateLevelText();
         UpdateCoinUI();
 
-
         if (gameManagerSO.currentLife == 0)
-        {
             playButton.interactable = false;
-        }
     }
 
-    private void Update()
-    {
-        
-    }
     private void OnEnable()
     {
         uiEventSO.EnableWinUIEvent.AddListener(EnableWinUIMethod);
@@ -89,92 +96,72 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
-    #region UI CALLBACK METHODS
 
-    //HOME
-    //Home panelinde görseldeki level textlerinin güncellenmesi
+    #region HOME UI METHODS
+
+    // Ana menüde gösterilen level textlerini günceller
     public void HomeLevelTextUpdater()
     {
-        for (int i = 0; homeLevelTexts.Length > i; i++)
-        {
+        for (int i = 0; i < homeLevelTexts.Length; i++)
             homeLevelTexts[i].text = (gameManagerSO.currentLevel + 1 + i).ToString();
-        }
     }
 
-    //LifeCount text güncellemeleri
+    // Can sayısını ekrana yansıtır
     public void UpdateLifeUI(int currentLife, int maxLife)
     {
         if (lifeCountText != null)
-        {
             lifeCountText.text = currentLife.ToString();
-        }
     }
 
-    //Life Countdown
+    // Can dolum süresini günceller
     public void UpdateLifeTimerUI(float timeLeft)
     {
         int minutes = Mathf.FloorToInt(timeLeft / 60);
         int seconds = Mathf.FloorToInt(timeLeft % 60);
 
         if (lifeCountdownText != null)
-        {
             lifeCountdownText.text = string.Format("{0:D2}:{1:D2}", minutes, seconds);
-        }
     }
 
-    //Can fullenince gösterilecek 
+    // Canlar tamamen dolduğunda “Full!” yazar
     public void SetFullLifeText()
     {
         if (lifeCountdownText != null)
-        {
             lifeCountdownText.text = "Full!";
-        }
     }
 
-    //Coin uı günceller
-    //CoinCount gameObjesini gerekli yerlerde göstermek için kullanılır
-    //Lose revive,win
+    // Coin miktarını günceller
     public void UpdateCoinUI()
     {
         coinCountText.text = gameManagerSO.currentCoin.ToString();
     }
 
-    //Timer text güncelleme
+    #endregion
+
+
+    #region IN-GAME UI METHODS
+
+    // Level zamanlayıcısını ekranda günceller
     public void UpdateTimerText()
     {
         if (levelCountdownTimerText != null)
         {
             int minutes = Mathf.FloorToInt(gameManagerSO.currentLevelTimer / 60);
             int seconds = Mathf.FloorToInt(gameManagerSO.currentLevelTimer % 60);
-
             levelCountdownTimerText.text = string.Format("{0:D2}:{1:D2}", minutes, seconds);
 
-            // Timer kırmızıya dön (son 10 saniye)
-            if (gameManagerSO.currentLevelTimer <= 10f)
-            {
-                levelCountdownTimerText.color = Color.red;
-            }
-            else
-            {
-                levelCountdownTimerText.color = Color.white;
-            }
+            // Süre 10 saniyenin altına indiğinde kırmızıya döner
+            levelCountdownTimerText.color = gameManagerSO.currentLevelTimer <= 10f ? Color.red : Color.white;
         }
     }
 
-    //Level text güncelleme
+    // Mevcut level numarasını gösterir
     public void UpdateLevelText()
     {
-        int level = gameManagerSO.currentLevel + 1;
-        levelText.text = level.ToString();
+        levelText.text = (gameManagerSO.currentLevel + 1).ToString();
     }
 
-    //lose can gösterilsin //Lose kısmında direkt çağır 
-    public void ShowLifeUIObject()
-    {
-        lifeObject.SetActive(true);
-    }
-
-    //Can azalt 
+    // Bir can azaltır ve UI’ı günceller
     public void DecreaseLifeCount()
     {
         if (gameManagerSO.currentLife > 0)
@@ -184,9 +171,12 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    //vibration ve sound kaydetmesi ve ona göre çağırılması 
+    #endregion
 
-    //WIN UI HELPER METHODS
+
+    #region WIN / REWARD METHODS
+
+    // Kazanılan level zorluğuna göre ödül hesaplar ve coin ekler
     private int CalculateAndAddReward()
     {
         int rewardAmount = 0;
@@ -208,22 +198,110 @@ public class UIManager : MonoBehaviour
         return rewardAmount;
     }
 
+    // Kazanılan ödülü UI'da gösterir
     private void UpdateWinUI(int calculatedReward)
     {
         if (rewardCoinText != null)
-        {
             rewardCoinText.text = calculatedReward.ToString();
-        }
+
         UpdateCoinUI();
     }
 
-    //LOSE UI HELPER METHODS
-    //WIN UI METHODS
+    #endregion
+
+
+    #region REVIVE / RESTART METHODS
+
+    // Can kullanarak yeniden doğmayı sağlar (butonda bağlı)
+    public void UseLifeToRevive()
+    {
+        if (gameManagerSO.currentLife > 0)
+        {
+            DecreaseLifeCount();
+            DisableReviveUIMethod();
+            RestartCurrentLevel();
+        }
+
+        if (gameManagerSO.currentLife == 0)
+            restartButton.interactable = false;
+    }
+
+    // Coin harcayarak yeniden doğmayı sağlar (butonda bağlı)
+    public void UseCoinToRevive()
+    {
+        if (gameManagerSO.currentCoin >= gameManagerSO.reviveCoin)
+        {
+            gameManagerSO.currentCoin -= gameManagerSO.reviveCoin;
+            inGamePanel.SetActive(true);
+            gameManager.AddPlayTime();
+            ContinueGame();
+            DisableLoseUIMethod();
+            DisableReviveUIMethod();
+            Debug.Log("YETERLİ PARA VAR");
+        }
+        else
+        {
+            reviveButton.interactable = false;
+            Debug.Log("YETERLİ PARA YOK");
+        }
+
+    }
+
+    // Leveli baştan başlatır
+    public void RestartCurrentLevel()
+    {
+        gameManagerSO.isGameOver = false;
+        gameManagerSO.isGameWin = false;
+        gameManagerSO.isGamePause = false;
+        ContinueGame();
+        gameManagerSO.SetTimerByLevelType();
+        lifeObject.SetActive(false);
+        inGamePanel.SetActive(true);
+        mapManager.LoadSavedLevel();
+    }
+
+    // Revive panelindeki coin bilgisini butonla günceller
+    public void UpdateReviveUI()
+    {
+        reviveCoinText.text = gameManagerSO.reviveCoin.ToString();
+        reviveTimerText.text = "+"+gameManagerSO.addReviveTimer.ToString();
+        if (gameManagerSO.currentCoin < gameManagerSO.reviveCoin)
+        {
+            reviveButton.interactable = false;
+        }
+
+    }
+
+    #endregion
+
+
+    #region GAME CONTROL METHODS
+
+    // Oyunu duraklatır
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+        gameManagerSO.isGamePause = true;
+    }
+
+    // Oyunu devam ettirir
+    public void ContinueGame()
+    {
+        Time.timeScale = 1f;
+        gameManagerSO.isGamePause = false;
+    }
+
+    #endregion
+
+
+    #region UI ENABLE / DISABLE METHODS
+
+    //WIN
     public void EnableWinUIMethod()
     {
         if (gameManagerSO.isGameWin)
         {
-            coinCountObject.SetActive(true);
+            coinObject.SetActive(true);
             winUIObject.SetActive(true);
             inGamePanel.SetActive(false);
             loseUIObject.SetActive(false);
@@ -246,91 +324,44 @@ public class UIManager : MonoBehaviour
     public void DisableWinUIMethod()
     {
         winUIObject.SetActive(false);
+        coinObject.SetActive(false);
+
     }
 
-    //LOSE UI METHODS
+    //LOSE
+
     public void EnableLoseUIMethod()
     {
-            loseUIObject.SetActive(true);
-            inGamePanel.SetActive(false);
-            revivePanel.SetActive(false);
-            gameManagerSO.isGameStart = false;
+        loseUIObject.SetActive(true);
+        lifeObject.SetActive(true);
+        inGamePanel.SetActive(false);
+        revivePanel.SetActive(false);
+        gameManagerSO.isGameStart = false;
+
     }
 
     public void DisableLoseUIMethod()
     {
+        lifeObject.SetActive(false);
         loseUIObject.SetActive(false);
     }
 
-    //REVIVE UI METHODS
+    //REVIVE
     public void EnableReviveUIMethod()
     {
         revivePanel.SetActive(true);
         inGamePanel.SetActive(false);
         loseUIObject.SetActive(false);
-        reviveCoinText.text = gameManagerSO.reviveLevelTimer.ToString();
-
-        ShowLifeUIObject();
+        lifeObject.SetActive(true);
+        reviveCoinText.text = gameManagerSO.reviveCoin.ToString();
         UpdateCoinUI();
-
         gameManagerSO.isGameStart = false;
     }
 
     public void DisableReviveUIMethod()
     {
+        lifeObject.SetActive(false);
         revivePanel.SetActive(false);
-    }
-
-    public void UseLifeToRevive()
-    {
-        if (gameManagerSO.currentLife > 0)
-        {
-            DecreaseLifeCount();
-            DisableReviveUIMethod();
-            RestartCurrentLevel();
-        }
-        if (gameManagerSO.currentLife == 0)
-        {
-            restartButton.interactable = false;
-
-        }
-    }
-
-    public void UseCoinToRevive()
-    {
-        if (gameManagerSO.currentCoin >= gameManagerSO.reviveCoin)
-        {
-            gameManagerSO.currentCoin -= gameManagerSO.reviveCoin;
-            DisableReviveUIMethod();
-        }
-    }
-
-    private void RestartCurrentLevel()
-    {
-        gameManagerSO.isGameStart = true;
-        gameManagerSO.isGameOver = false;
-        gameManagerSO.isGameWin = false;
-        gameManagerSO.SetTimerByLevelType();
-        DisableLoseUIMethod();
-        inGamePanel.SetActive(true);
-        UpdateTimerText();
-        mapManager.LoadSavedLevel();
-    }
-
-    public void UpdateReviveUI()
-    {
-        reviveCoinText.text = gameManagerSO.reviveCoin.ToString();
-    }
-
-    public void PauseGame()
-    {
-        Time.timeScale=0f;
-        gameManagerSO.isGamePause = true;
-    }
-    public void ContinueGame()
-    {
-        Time.timeScale = 1f;
-        gameManagerSO.isGamePause = false;
     }
 
     #endregion
