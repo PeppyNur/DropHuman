@@ -43,6 +43,11 @@ public class ColorMatcher : MonoBehaviour
 
         BlockText();
     }
+    private void Update()
+    {
+                objects.RemoveAll(x => x == null);
+
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -54,15 +59,12 @@ public class ColorMatcher : MonoBehaviour
             {
                 Destroy(other.gameObject);
                 objects.RemoveAt(indexToRemove);
+                //objects.RemoveAll(x => x == null);
                 BlockText();
             }
            
 
-            if (objects.Count == 0)
-            {
-                isAnimStart = true;
-                animator.SetBool("isAnimStart", isAnimStart);
-            }
+            DestroyBlock();
         }
     }
 
@@ -94,11 +96,19 @@ public class ColorMatcher : MonoBehaviour
         }
     }
 
-    void BlockText()
+    public void BlockText()
     {
         blockCounterText.text = objects.Count.ToString();
     }
 
+    public void DestroyBlock()
+    {
+        if (objects.Count == 0)
+        {
+            isAnimStart = true;
+            animator.SetBool("isAnimStart", isAnimStart);
+        }
+    }
     void UpdateAfterAnimation()
     {
         Debug.Log("Animasyon bitti, obje yok ediliyor...");

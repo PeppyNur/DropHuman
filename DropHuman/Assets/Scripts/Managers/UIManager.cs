@@ -57,13 +57,6 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI levelCountdownTimerText;
 
-    // Feature Texts
-    [Space(5)]
-    public TextMeshProUGUI frozeFeatureText;
-    public TextMeshProUGUI bombFeatureText;
-    public TextMeshProUGUI magnetFeatureText;
-
-
     #region UNITY METHODS
     private void Start()
     {
@@ -149,9 +142,9 @@ public class UIManager : MonoBehaviour
             int minutes = Mathf.FloorToInt(gameManagerSO.currentLevelTimer / 60);
             int seconds = Mathf.FloorToInt(gameManagerSO.currentLevelTimer % 60);
             levelCountdownTimerText.text = string.Format("{0:D2}:{1:D2}", minutes, seconds);
-
             // Süre 10 saniyenin altına indiğinde kırmızıya döner
             levelCountdownTimerText.color = gameManagerSO.currentLevelTimer <= 10f ? Color.red : Color.white;
+            
         }
     }
 
@@ -170,6 +163,8 @@ public class UIManager : MonoBehaviour
             lifeCountText.text = gameManagerSO.currentLife.ToString();
         }
     }
+
+   
 
     #endregion
 
@@ -318,6 +313,7 @@ public class UIManager : MonoBehaviour
             UpdateWinUI(reward);
 
             gameManagerSO.isGameStart = false;
+            gameManagerSO.currentMap=null;
         }
     }
 

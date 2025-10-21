@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: GameManagerSO
   m_EditorClassIdentifier: 
   currentLevelType: 1
-  currentLevel: 12
-  savedLevel: 12
+  currentLevel: 17
+  savedLevel: 16
   trainingLevelTimer: 10
   normalLevelTimer: 20
   hardLevelTimer: 30
   currentLevelTimer: 20
   addReviveTimer: 500
   lifeCountdown: 15
-  currentLife: 9
+  currentLife: 0
   maxLife: 5
-  currentMap: {fileID: 3085819932851563705, guid: 5cc5913901e8d004c8057c97a9016547, type: 3}
+  currentMap: {fileID: 0}
   trainingLevelMaps:
   - {fileID: 3085819932851563705, guid: 76a980749de51de48b5d761ec7590b54, type: 3}
   normalLevelMaps:
@@ -32,14 +32,21 @@ MonoBehaviour:
   - {fileID: 3085819932851563705, guid: 77438a71d68097843b35acc834dd32c5, type: 3}
   hardLevelMaps:
   - {fileID: 3085819932851563705, guid: f5be1b6cfab023040b7ddcc6c9a2a2dc, type: 3}
-  currentCoin: 3630
+  currentCoin: 5000
   trainingLevelCoin: 10
   normalLevelCoin: 20
   hardLevelCoin: 30
   reviveCoin: 200
-  isGameOver: 1
+  isGameOver: 0
   isGameWin: 0
-  isGameStart: 1
-  isGamePause: 1
+  isGameStart: 0
+  isGamePause: 0
   isVibrating: 0
   isSoundOn: 0
+  isFrozenUsed: 0
+  isBombUsed: 0
+  isMagnetUsed: 0
+  frozenTime: 5
+  freezeCount: 0
+  bombCount: 0
+  magnetCount: 0
