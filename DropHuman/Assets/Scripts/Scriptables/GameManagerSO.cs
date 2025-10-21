@@ -63,12 +63,18 @@ public class GameManagerSO : ScriptableObject
     // ==================== FEATURE SETTINGS ====================
     [Header("FEATURE SETTINGS")]
     public bool isFrozenUsed;
+    public bool isBombUsed;
+    public bool isMagnetUsed;
 
     [Space(5)]
     public float frozenTime;
 
     [Space(5)]
     public int freezeCount;
+    public int bombCount;
+    public int magnetCount;
+
+
     // ==================== TIMER MANAGEMENT ====================
     #region Timer Management
     public void SetTimerByLevelType()
@@ -88,15 +94,5 @@ public class GameManagerSO : ScriptableObject
                 break;
         }
     }
-    #endregion
-
-    #region PLAYER STATE
-    public enum PlayerState
-    {
-        Normal,
-        TargetingBomb,
-        TargetingMagnet
-    }
-
     #endregion
 }
