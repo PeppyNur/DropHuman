@@ -92,11 +92,6 @@ public class CountdownController : MonoBehaviour
         }
     }
 
-    private void OnApplicationQuit()
-    {
-        gameManager.SaveExitTime();
-    }
-
     private void RecalculateFromOffline()
     {
         float offlineSeconds = gameManager.GetOfflineTimePassed();
