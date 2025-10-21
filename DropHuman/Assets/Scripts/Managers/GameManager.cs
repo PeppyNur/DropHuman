@@ -82,22 +82,26 @@ public class GameManager : MonoBehaviour
 
     public void StartLevelTimer()
     {
-        if (gameManagerSO.isGameStart && !gameManagerSO.isGamePause&& !gameManagerSO.isFrozenUsed)
+        if (gameManagerSO.isGameStart && !gameManagerSO.isGamePause)
         {
-            if (gameManagerSO.currentLevelTimer > 0)
+            if(!gameManagerSO.isFrozenUsed)
             {
-                gameManagerSO.currentLevelTimer -= Time.deltaTime;
-                uiManager.UpdateTimerText();
-            }
-            else
-            {
-                gameManagerSO.currentLevelTimer = 0; // Sayacı 0'da sabitle
-            }
-            // --- BİTTİ ---
+                if (gameManagerSO.currentLevelTimer > 0)
+                {
+                    gameManagerSO.currentLevelTimer -= Time.deltaTime;
+                    uiManager.UpdateTimerText();
+                }
+                else
+                {
+                    gameManagerSO.currentLevelTimer = 0; // Sayacı 0'da sabitle
+                }
+                // --- BİTTİ ---
 
-            FindAllBlocks();
+                FindAllBlocks();
 
-            CheckGameStatus();
+                CheckGameStatus();
+            }
+            
         }
 
     }

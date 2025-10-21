@@ -63,8 +63,12 @@ public class GameManagerSO : ScriptableObject
     // ==================== FEATURE SETTINGS ====================
     [Header("FEATURE SETTINGS")]
     public bool isFrozenUsed;
+
     [Space(5)]
     public float frozenTime;
+
+    [Space(5)]
+    public int freezeCount;
     // ==================== TIMER MANAGEMENT ====================
     #region Timer Management
     public void SetTimerByLevelType()
