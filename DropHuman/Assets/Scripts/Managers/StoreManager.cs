@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Bundle
 {
     public string name;
-    public int spendCoin;
+    public int priceOfBundle;
     public int buyLifeCount;
     public int buyBombCount;
     public int buyMagnetCount;
@@ -29,27 +29,22 @@ public class StoreManager : MonoBehaviour
     public UIManager uiManager;
     private void Start()
     {
-        // Her bundle'ýn butonuna týklama eventini ekle
         for (int i = 0; i < bundles.Length; i++)
         {
-            int index = i; // closure için
+            int index = i; 
             bundles[i].buyButton.onClick.AddListener(() => BuyBundle(index));
             UpdateBundleUI(bundles[i]);
         }
     }
 
-    // Butona týklandýðýnda çaðrýlýr
     private void BuyBundle(int index)
     {
         Bundle selectedBundle = bundles[index];
 
-        // Coin kontrolü
-        if (gameManagerSO.currentCoin >= selectedBundle.spendCoin)
+        if (gameManagerSO.currentCoin >= selectedBundle.priceOfBundle)
         {
-            // Coini düþ
-            gameManagerSO.currentCoin -= selectedBundle.spendCoin;
+            gameManagerSO.currentCoin -= selectedBundle.priceOfBundle;
 
-            // Oyuncuya item ekle
             gameManagerSO.currentLife += selectedBundle.buyLifeCount;
             gameManagerSO.bombCount += selectedBundle.buyBombCount;
             gameManagerSO.magnetCount += selectedBundle.buyMagnetCount;
@@ -57,7 +52,7 @@ public class StoreManager : MonoBehaviour
 
             uiManager.UpdateCoinUI();
             uiManager.UpdateLifeUI(gameManagerSO.currentLife, gameManagerSO.maxLife);
-            // UI'larý güncelle
+
             UpdateBundleUI(selectedBundle);
         }
         else
@@ -66,11 +61,10 @@ public class StoreManager : MonoBehaviour
         }
     }
 
-    // Bundle UI'larýný güncelle
     private void UpdateBundleUI(Bundle bundle)
     {
         if (bundle.priceText != null)
-            bundle.priceText.text = bundle.spendCoin.ToString();
+            bundle.priceText.text = bundle.priceOfBundle.ToString();
 
         if (bundle.lifeCountText != null)
             bundle.lifeCountText.text = bundle.buyLifeCount.ToString();

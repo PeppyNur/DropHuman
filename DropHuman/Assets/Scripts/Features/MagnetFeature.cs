@@ -17,7 +17,6 @@ public class MagnetFeature : MonoBehaviour
 
     private void Start()
     {
-        UpdateMagnetText();
 
         originalYPositions = new float[gameManager.blocks.Count];
         for (int i = 0; i < gameManager.blocks.Count; i++)
@@ -28,6 +27,8 @@ public class MagnetFeature : MonoBehaviour
 
     private void Update()
     {
+        UpdateMagnetText();
+
         //magnet kullanýmý bittiðinde bloklarý eski yerine geri getirir
         if (!gameManagerSO.isMagnetUsed && areBlocksRaised && gameManagerSO.magnetCount>0)
         {
@@ -64,7 +65,7 @@ public class MagnetFeature : MonoBehaviour
     //magnet butonunda kullanýlan method
     public void MagnetButtonMethod()
     {
-        if (!areBlocksRaised)
+        if (!areBlocksRaised && gameManagerSO.magnetCount>0)
         {
             RaiseBlocks();
         }
@@ -117,6 +118,8 @@ public class MagnetFeature : MonoBehaviour
             colorMatcher.DestroyBlock();
         }
     }
+
+    
 
     //Magnet Textini günceller
     void UpdateMagnetText()

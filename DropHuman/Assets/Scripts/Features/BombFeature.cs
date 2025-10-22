@@ -15,7 +15,8 @@ public class BombFeature : MonoBehaviour
 
     private void Update()
     {
-        
+        UpdateBombText();
+
         if (!gameManagerSO.isBombUsed && areSpheresRaised)
         {
             ResetSpherePosition();
@@ -53,7 +54,7 @@ public class BombFeature : MonoBehaviour
     {
         UpdateBombText();
 
-        if (!areSpheresRaised)
+        if (!areSpheresRaised && gameManagerSO.bombCount>0)
         {
             SphereObjectsFromScene(); 
             RaiseSpheres();            
@@ -129,6 +130,7 @@ public class BombFeature : MonoBehaviour
             }
         }
     }
+
 
     // Bomb sayýsýný UI'ye güncelle
     void UpdateBombText()

@@ -19,6 +19,9 @@ public class MapManager : MonoBehaviour
     // Kaydedilmiş seviyeyi yükler, eğer mevcutsa aynı prefab'ı tekrar oluşturur
     public void LoadSavedLevel()
     {
+        gameManagerSO.isGameWin = false;
+        gameManagerSO.isGameOver = false;
+
         if (gameManagerSO.savedLevel > 0 && gameManagerSO.currentLife > 0)
         {
             gameManagerSO.currentLevel = gameManagerSO.savedLevel;
@@ -44,7 +47,10 @@ public class MapManager : MonoBehaviour
     // Yeni bir seviye yüklendiğinde uygun haritayı seçip oluşturur
     public void LoadNextLevel()
     {
-        if(gameManagerSO.currentMap == null)
+        gameManagerSO.isGameWin = false;
+        gameManagerSO.isGameOver = false;
+
+        if (gameManagerSO.currentMap == null)
         {
             if (gameManagerSO.currentLife > 0)
             {

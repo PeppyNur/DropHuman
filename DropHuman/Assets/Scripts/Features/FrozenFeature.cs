@@ -7,8 +7,8 @@ public class FrozenFeature : MonoBehaviour
     public GameManagerSO gameManagerSO;
     public TextMeshProUGUI freezeCountText;
     public TextMeshProUGUI freezeTimeText;
-    public int freezeGiftLevel;
-    private bool isGiftAdded;
+   
+
 
     private void Start()
     {
@@ -21,12 +21,6 @@ public class FrozenFeature : MonoBehaviour
 
         freezeCountText.color=gameManagerSO.freezeCount==0? Color.red : Color.white;
 
-        if (gameManagerSO.currentLevel == freezeGiftLevel && !isGiftAdded)
-        {
-            gameManagerSO.freezeCount++;
-            isGiftAdded = true;
-        }
-        
     }
     public void FrezeTime()
     {
@@ -44,4 +38,5 @@ public class FrozenFeature : MonoBehaviour
 
         gameManagerSO.isFrozenUsed = false;
     }
+
 }

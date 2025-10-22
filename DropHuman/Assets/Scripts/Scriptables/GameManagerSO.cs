@@ -66,13 +66,29 @@ public class GameManagerSO : ScriptableObject
     public bool isBombUsed;
     public bool isMagnetUsed;
 
-    [Space(5)]
-    public float frozenTime;
+    [Space(10)]
+    public int freezeGiftLevel;
+    public int bombGiftLevel;
+    public int magnetGiftLevel;
 
-    [Space(5)]
+    [Space(10)]
+    public int freezeGiftCount;
+    public int bombGiftCount;
+    public int magnetGiftCount;
+
+    [Space(10)]
+    public bool IsFreezeFeatureGifted;
+    public bool isBombFeatureGifted;
+    public bool isMagnetFeatureGifted;
+    public bool isGiftPanelOpen;
+
+    [Space(10)]
     public int freezeCount;
     public int bombCount;
     public int magnetCount;
+
+    [Space(10)]
+    public float frozenTime;
 
 
     // ==================== TIMER MANAGEMENT ====================

@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    #region VARIABLES
     [Header("SCRIPTABLE OBJECTS")]
     public UIEventSO uiEventSO;
     [SerializeField] private GameManagerSO gameManagerSO;
@@ -57,6 +59,23 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI levelCountdownTimerText;
 
+    [Header("FEATURE SETTINGS")]
+    public GameObject giftPanel;
+    public GameObject bombGiftPanel;
+    public TextMeshProUGUI bombGiftText;
+
+    [Space(5)]
+    public GameObject magnetGiftPanel;
+    public TextMeshProUGUI magnetGiftText;
+
+    [Space(5)]
+    public GameObject frozeGiftPanel;
+    public TextMeshProUGUI freezeGiftText;
+
+
+
+    #endregion
+
     #region UNITY METHODS
     private void Start()
     {
@@ -64,8 +83,11 @@ public class UIManager : MonoBehaviour
         UpdateLevelText();
         UpdateCoinUI();
 
-        if (gameManagerSO.currentLife == 0)
-            playButton.interactable = false;
+        DisablePlayButton();
+
+    }
+    private void Update()
+    {
     }
 
     private void OnEnable()
@@ -88,7 +110,67 @@ public class UIManager : MonoBehaviour
         uiEventSO.DisableReviveUIEvent.RemoveListener(DisableReviveUIMethod);
     }
     #endregion
+    
+    public void GiftPanel()
+    {
+        gameManagerSO.isGamePause = !giftPanel;
 
+        if (gameManagerSO.currentLevel==gameManagerSO.freezeGiftLevel || gameManagerSO.currentLevel==gameManagerSO.bombGiftLevel || gameManagerSO.currentLevel == gameManagerSO.magnetGiftLevel)
+        {
+            giftPanel.SetActive(true);
+            gameManagerSO.isGamePause = true;
+
+            if(gameManagerSO.currentLevel == gameManagerSO.freezeGiftLevel && gameManagerSO.freezeGiftCount>0 && gameManagerSO.isGameWin)
+            {
+                freezeGiftText.text = gameManagerSO.freezeGiftCount.ToString();
+                gameManagerSO.freezeCount += gameManagerSO.freezeGiftCount;
+
+                frozeGiftPanel.SetActive(true);
+                gameManagerSO.IsFreezeFeatureGifted = true;
+            }
+            else
+            {
+                frozeGiftPanel.SetActive(false);
+            }
+
+            if (gameManagerSO.currentLevel == gameManagerSO.bombGiftLevel && gameManagerSO.bombGiftCount > 0 && gameManagerSO.isGameWin)
+            {
+                bombGiftText.text = gameManagerSO.bombGiftCount.ToString();
+                gameManagerSO.bombCount += gameManagerSO.bombGiftCount;
+
+                bombGiftPanel.SetActive(true);
+                gameManagerSO.isBombFeatureGifted = true;
+            }
+            else
+            {
+                bombGiftPanel.SetActive(false);
+            }
+
+            if (gameManagerSO.currentLevel == gameManagerSO.magnetGiftLevel && gameManagerSO.magnetGiftCount > 0 && gameManagerSO.isGameWin)
+            {
+                magnetGiftText.text = gameManagerSO.magnetGiftCount.ToString();
+                gameManagerSO.magnetCount += gameManagerSO.magnetGiftCount;
+
+                magnetGiftPanel.SetActive(true);
+                gameManagerSO.isMagnetFeatureGifted = true;
+            }
+            else
+            {
+                magnetGiftPanel.SetActive(false);
+            }
+
+        }
+
+    }
+
+
+  
+    public void DisablePlayButton()
+    {
+        if (gameManagerSO.currentLife == 0)
+            playButton.interactable = false;
+        else playButton.interactable = true;
+    }
 
     #region HOME UI METHODS
 
@@ -303,6 +385,7 @@ public class UIManager : MonoBehaviour
             revivePanel.SetActive(false);
 
             gameManagerSO.currentLevel++;
+            GiftPanel();
             gameManagerSO.SetTimerByLevelType();
 
             HomeLevelTextUpdater();

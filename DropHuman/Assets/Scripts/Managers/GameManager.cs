@@ -28,6 +28,15 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         StartLevelTimer();
+        uiManager.DisablePlayButton();
+        if (gameManagerSO.isGamePause)
+        {
+            uiManager.PauseGame();
+        }
+        else
+        {
+            uiManager.ContinueGame();
+        }
         
     }
 
