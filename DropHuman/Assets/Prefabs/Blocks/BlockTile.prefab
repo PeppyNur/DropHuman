@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2225927655130193471}
   - component: {fileID: 6157960979538430789}
   - component: {fileID: 5218510591348949423}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 5063237643082461714}
   - component: {fileID: 7103287913662156064}
   - component: {fileID: 1789419205850561059}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 5668195142666043450}
   - component: {fileID: 3430053736773501608}
   - component: {fileID: 5261691617588212780}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 7653525209639529936}
   - component: {fileID: 5360421133207512365}
   - component: {fileID: 8033023359823337789}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,7 +355,7 @@ GameObject:
   - component: {fileID: 1594106387356952601}
   - component: {fileID: 5439941056289189753}
   - component: {fileID: 9144277207549757198}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 1760750569414032504}
   - component: {fileID: 5535402602904867351}
   - component: {fileID: 679159446223087618}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -527,7 +527,7 @@ GameObject:
   - component: {fileID: 8490719100232100202}
   - component: {fileID: 347428659130367791}
   - component: {fileID: 687134285943842460}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: BlockTile
   m_TagString: Block
   m_Icon: {fileID: 0}
@@ -621,7 +621,7 @@ GameObject:
   - component: {fileID: 1365813818475722822}
   - component: {fileID: 7129315100409368746}
   - component: {fileID: 1422464148970492706}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -707,7 +707,7 @@ GameObject:
   - component: {fileID: 6608631693343228309}
   - component: {fileID: 5070715861479890483}
   - component: {fileID: 4591188081093514102}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

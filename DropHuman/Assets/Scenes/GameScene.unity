@@ -3509,6 +3509,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIManager
       objectReference: {fileID: 0}
+    - target: {fileID: 1364790641377010880, guid: 52409946def3e08469eb208bff68463f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1525900879049082968, guid: 52409946def3e08469eb208bff68463f, type: 3}
       propertyPath: m_text
       value: 

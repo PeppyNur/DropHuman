@@ -37,10 +37,6 @@ public class Block : MonoBehaviour
     private Vector3 gizmoSweepDirection;
     private float gizmoSweepDistance;
 
-    [Header("Hareket Alanı Sınırları")]
-    [Tooltip("Bloğun hareket edebileceği maksimum X ve Z koordinatlarını belirler.")]
-    [SerializeField] Bounds movementBounds = new Bounds(Vector3.zero, new Vector3(10f, 1f, 10f));
-
     #endregion
 
     #region UNITY METHODS
@@ -56,7 +52,6 @@ public class Block : MonoBehaviour
         lastValidPosition = transform.position;
         AttachCanvasToBottomRightAnchor();
 
-        transform.position = ClampToMovementBounds(transform.position);
         lastValidPosition = transform.position;
     }
 
@@ -70,16 +65,6 @@ public class Block : MonoBehaviour
         }
     }
     #endregion
-
-    // Helper Metot: Pozisyonu Sınırla
-    private Vector3 ClampToMovementBounds(Vector3 position)
-    {
-        float clampedX = Mathf.Clamp(position.x, movementBounds.min.x, movementBounds.max.x);
-        float clampedZ = Mathf.Clamp(position.z, movementBounds.min.z, movementBounds.max.z);
-
-        return new Vector3(clampedX, fixedY, clampedZ);
-    }
-
     #region PLACEMENT
     public bool CheckPlacementOverlap(Vector3 targetPos, bool isSweepTest)
     {
@@ -245,16 +230,14 @@ public class Block : MonoBehaviour
                     Vector3 newXZPosition = hit.point + dragOffset;
                     Vector3 attemptedPosition = new Vector3(newXZPosition.x, fixedY, newXZPosition.z);
 
-                    // Sınır kontrolünü uygula
-                    Vector3 clampedPosition = ClampToMovementBounds(attemptedPosition);
 
                     // 1. Hedef Alan Temiz mi? (Overlap Testi)
-                    bool targetAreaClear = CheckPlacementOverlap(clampedPosition, false);
+                    bool targetAreaClear = CheckPlacementOverlap(attemptedPosition, false);
 
                     if (targetAreaClear)
                     {
-                        transform.position = clampedPosition;
-                        lastValidPosition = clampedPosition;
+                        transform.position = attemptedPosition;
+                        lastValidPosition = attemptedPosition;
                     }
                     else
                     {
@@ -270,7 +253,6 @@ public class Block : MonoBehaviour
                 Vector3 targetPosition = new Vector3(snappedX, fixedY, snappedZ);
 
                 // Snap sonrası sınır kontrolü
-                targetPosition = ClampToMovementBounds(targetPosition);
 
                 transform.position = targetPosition;
 
@@ -457,11 +439,6 @@ public class Block : MonoBehaviour
                 Gizmos.DrawSphere(targetEnd, 0.05f);
             }
         }
-
-        // --- Sınır Alanı Görselleştirmesi (ÇERÇEVE) ---
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireCube(movementBounds.center, movementBounds.size);
-        // -------------------------------------------
     }
     #endregion
 }
