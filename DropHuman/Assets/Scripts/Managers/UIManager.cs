@@ -63,16 +63,18 @@ public class UIManager : MonoBehaviour
     public GameObject giftPanel;
     public GameObject bombGiftPanel;
     public TextMeshProUGUI bombGiftText;
+    public Button bombButton;
 
     [Space(5)]
     public GameObject magnetGiftPanel;
     public TextMeshProUGUI magnetGiftText;
+    public Button magnetButton;
+
 
     [Space(5)]
     public GameObject frozeGiftPanel;
     public TextMeshProUGUI freezeGiftText;
-
-
+    public Button frozenButton;
 
     #endregion
 
@@ -88,6 +90,7 @@ public class UIManager : MonoBehaviour
     }
     private void Update()
     {
+        ButtonActivate();
     }
 
     private void OnEnable()
@@ -163,7 +166,38 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void ButtonActivate()
+    {
+        //froze
+        if (gameManagerSO.currentLevel >= gameManagerSO.freezeGiftLevel)
+        {
+            frozenButton.interactable = true;
+        }
+        else
+        {
+            frozenButton.interactable = false;
+        }
 
+        //bomb
+        if (gameManagerSO.currentLevel >= gameManagerSO.bombGiftLevel)
+        {
+            bombButton.interactable = true;
+        }
+        else
+        {
+            bombButton.interactable = false;
+        }
+
+        //magnet
+        if (gameManagerSO.currentLevel >= gameManagerSO.magnetGiftLevel )
+        {
+            magnetButton.interactable = true;
+        }
+        else
+        {
+            magnetButton.interactable = false;
+        }
+    }
   
     public void DisablePlayButton()
     {
