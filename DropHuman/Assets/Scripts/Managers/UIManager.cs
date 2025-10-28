@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class UIManager : MonoBehaviour
 {
@@ -39,6 +40,10 @@ public class UIManager : MonoBehaviour
     [Header("SETTINGS PANEL COMPONENTS")]
     public Toggle vibrationToggle;
     public Toggle soundToggle;
+    public AudioClip clickSound;
+    public AudioSource sfxSource;
+    public AudioSource musicSource;
+    public AudioMixer mainAudioMixer;
 
     [Header("WIN / LOSE PANELS")]
     public GameObject loseUIObject;
@@ -86,6 +91,10 @@ public class UIManager : MonoBehaviour
         UpdateCoinUI();
 
         DisablePlayButton();
+        InitializeToggles();
+        AddToggleListeners();
+
+        gameManager.LoadData();
 
     }
     private void Update()
@@ -113,17 +122,117 @@ public class UIManager : MonoBehaviour
         uiEventSO.DisableReviveUIEvent.RemoveListener(DisableReviveUIMethod);
     }
     #endregion
-    
+
+    #region SETTINGS METHODS
+    private void InitializeToggles()
+    {
+        gameManagerSO.isSoundOn = PlayerPrefs.GetInt("isSoundOn", 1) == 1; // Varsayılan: Açık
+        gameManagerSO.isVibrating = PlayerPrefs.GetInt("isVibrating", 1) == 1;
+
+        soundToggle.isOn = gameManagerSO.isSoundOn;
+        vibrationToggle.isOn = gameManagerSO.isVibrating;
+
+        // Oyun başladığında ses seviyelerini ayarla
+        SetMixerVolume(gameManagerSO.isSoundOn);
+    }
+
+    private void AddToggleListeners()
+    {
+        soundToggle.onValueChanged.AddListener((bool value) =>
+        {
+            gameManagerSO.isSoundOn = value;
+            PlayerPrefs.SetInt("isSoundOn", value ? 1 : 0);
+            PlayerPrefs.Save();
+
+            // YENİ: Mixer ses seviyelerini ayarla
+            SetMixerVolume(value);
+
+        });
+
+        vibrationToggle.onValueChanged.AddListener((bool value) =>
+        {
+            gameManagerSO.isVibrating = value;
+            PlayerPrefs.SetInt("isVibrating", value ? 1 : 0);
+            PlayerPrefs.Save();
+
+        });
+    }
+
+    private void SetMixerVolume(bool isSoundOn)
+    {
+        if (mainAudioMixer == null) return;
+
+        float volume = isSoundOn ? 0f : -80f;
+
+        mainAudioMixer.SetFloat("MusicVolume", volume);
+        mainAudioMixer.SetFloat("SFXVolume", volume);
+    }
+    public void VibrateOnce()
+    {
+        if (gameManagerSO.isVibrating)
+        {
+            Handheld.Vibrate();
+        }
+    }
+
+    public void PlayClickSounds()
+    {
+        if(gameManagerSO.isSoundOn && clickSound!=null && sfxSource!=null)
+        {
+            sfxSource.PlayOneShot(clickSound);
+        }
+    }
+    #endregion
+
+    #region HOME UI METHODS
+
+    // Ana menüde gösterilen level textlerini günceller
+    public void HomeLevelTextUpdater()
+    {
+        for (int i = 0; i < homeLevelTexts.Length; i++)
+            homeLevelTexts[i].text = (gameManagerSO.currentLevel + 1 + i).ToString();
+    }
+
+    // Can sayısını ekrana yansıtır
+    public void UpdateLifeUI(int currentLife, int maxLife)
+    {
+        if (lifeCountText != null)
+            lifeCountText.text = currentLife.ToString();
+    }
+
+    // Can dolum süresini günceller
+    public void UpdateLifeTimerUI(float timeLeft)
+    {
+        int minutes = Mathf.FloorToInt(timeLeft / 60);
+        int seconds = Mathf.FloorToInt(timeLeft % 60);
+
+        if (lifeCountdownText != null)
+            lifeCountdownText.text = string.Format("{0:D2}:{1:D2}", minutes, seconds);
+    }
+
+    // Canlar tamamen dolduğunda “Full!” yazar
+    public void SetFullLifeText()
+    {
+        if (lifeCountdownText != null)
+            lifeCountdownText.text = "Full!";
+    }
+
+    // Coin miktarını günceller
+    public void UpdateCoinUI()
+    {
+        coinCountText.text = gameManagerSO.currentCoin.ToString();
+    }
+
     public void GiftPanel()
     {
         gameManagerSO.isGamePause = !giftPanel;
 
-        if (gameManagerSO.currentLevel==gameManagerSO.freezeGiftLevel || gameManagerSO.currentLevel==gameManagerSO.bombGiftLevel || gameManagerSO.currentLevel == gameManagerSO.magnetGiftLevel)
+        if (gameManagerSO.currentLevel == gameManagerSO.freezeGiftLevel || gameManagerSO.currentLevel == gameManagerSO.bombGiftLevel || gameManagerSO.currentLevel == gameManagerSO.magnetGiftLevel)
         {
             giftPanel.SetActive(true);
             gameManagerSO.isGamePause = true;
 
-            if(gameManagerSO.currentLevel == gameManagerSO.freezeGiftLevel && gameManagerSO.freezeGiftCount>0 && gameManagerSO.isGameWin)
+            if (gameManagerSO.currentLevel == gameManagerSO.freezeGiftLevel && gameManagerSO.freezeGiftCount > 0 && gameManagerSO.isGameWin)
             {
                 freezeGiftText.text = gameManagerSO.freezeGiftCount.ToString();
                 gameManagerSO.freezeCount += gameManagerSO.freezeGiftCount;
@@ -189,7 +298,7 @@ public class UIManager : MonoBehaviour
         }
 
         //magnet
-        if (gameManagerSO.currentLevel >= gameManagerSO.magnetGiftLevel )
+        if (gameManagerSO.currentLevel >= gameManagerSO.magnetGiftLevel)
         {
             magnetButton.interactable = true;
         }
@@ -198,51 +307,12 @@ public class UIManager : MonoBehaviour
             magnetButton.interactable = false;
         }
     }
-  
+
     public void DisablePlayButton()
     {
         if (gameManagerSO.currentLife == 0)
             playButton.interactable = false;
         else playButton.interactable = true;
-    }
-
-    #region HOME UI METHODS
-
-    // Ana menüde gösterilen level textlerini günceller
-    public void HomeLevelTextUpdater()
-    {
-        for (int i = 0; i < homeLevelTexts.Length; i++)
-            homeLevelTexts[i].text = (gameManagerSO.currentLevel + 1 + i).ToString();
-    }
-
-    // Can sayısını ekrana yansıtır
-    public void UpdateLifeUI(int currentLife, int maxLife)
-    {
-        if (lifeCountText != null)
-            lifeCountText.text = currentLife.ToString();
-    }
-
-    // Can dolum süresini günceller
-    public void UpdateLifeTimerUI(float timeLeft)
-    {
-        int minutes = Mathf.FloorToInt(timeLeft / 60);
-        int seconds = Mathf.FloorToInt(timeLeft % 60);
-
-        if (lifeCountdownText != null)
-            lifeCountdownText.text = string.Format("{0:D2}:{1:D2}", minutes, seconds);
-    }
-
-    // Canlar tamamen dolduğunda “Full!” yazar
-    public void SetFullLifeText()
-    {
-        if (lifeCountdownText != null)
-            lifeCountdownText.text = "Full!";
-    }
-
-    // Coin miktarını günceller
-    public void UpdateCoinUI()
-    {
-        coinCountText.text = gameManagerSO.currentCoin.ToString();
     }
 
     #endregion
@@ -348,7 +418,6 @@ public class UIManager : MonoBehaviour
             ContinueGame();
             DisableLoseUIMethod();
             DisableReviveUIMethod();
-            Debug.Log("YETERLİ PARA VAR");
         }
         else
         {

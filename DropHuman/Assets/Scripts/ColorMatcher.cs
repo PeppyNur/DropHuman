@@ -13,6 +13,7 @@ public class ColorMatcher : MonoBehaviour
     public List<GameObject> objects = new List<GameObject>();
     public TMP_Text blockCounterText;
     private GameManager gameManager;
+    [SerializeField] private UIManager uiManager;
     [SerializeField] private Renderer rendererOfChild;
 
     [Header("ANIMATIONS")]
@@ -40,7 +41,15 @@ public class ColorMatcher : MonoBehaviour
         {
             gameManager = null;
         }
-
+        GameObject uiObject = GameObject.Find("UIManager");
+        if (uiObject != null)
+        {
+            uiManager = uiObject.GetComponent<UIManager>();
+        }
+        else
+        {
+            uiManager = null;
+        }
         BlockText();
     }
     private void Update()
@@ -58,9 +67,11 @@ public class ColorMatcher : MonoBehaviour
             if(indexToRemove != -1)
             {
                 Destroy(other.gameObject);
+                uiManager.VibrateOnce();
+                uiManager.PlayClickSounds();
                 objects.RemoveAt(indexToRemove);
-                //objects.RemoveAll(x => x == null);
                 BlockText();
+                
             }
            
 
@@ -87,8 +98,7 @@ public class ColorMatcher : MonoBehaviour
             GameObject spawnPointGO = spawnPoints[i];
             Transform spawnPoint = spawnPointGO.transform;
 
-            GameObject newObj = Instantiate(fallingObj, spawnPoint.position, spawnPoint.rotation);
-            newObj.transform.localScale = new Vector3(1, 1, 1);
+            GameObject newObj = Instantiate(fallingObj, spawnPoint.position, spawnPoint.rotation, spawnPoint);
 
             Renderer newRenderer = newObj.GetComponent<Renderer>();
             newRenderer.material = blockCS.colorOfObject;
@@ -111,8 +121,6 @@ public class ColorMatcher : MonoBehaviour
     }
     void UpdateAfterAnimation()
     {
-        Debug.Log("Animasyon bitti, obje yok ediliyor...");
-
         isAnimStart = false;
 
         if (gameManager != null && gameManager.blocks.Contains(gameObject))

@@ -52,7 +52,7 @@ public class StoreManager : MonoBehaviour
 
             uiManager.UpdateCoinUI();
             uiManager.UpdateLifeUI(gameManagerSO.currentLife, gameManagerSO.maxLife);
-
+            uiManager.PlayClickSounds();
             UpdateBundleUI(selectedBundle);
         }
         else

@@ -13,7 +13,13 @@ public class MapManager : MonoBehaviour
     private GameObject currentMapInstance;
 
     #endregion
-
+    private void Start()
+    {
+        if (gameManagerSO.currentLevel == 0)
+        {
+            gameManagerSO.currentMap=null;
+        }
+    }
     #region MAP GENERATOR
 
     // Kaydedilmiş seviyeyi yükler, eğer mevcutsa aynı prefab'ı tekrar oluşturur
@@ -36,7 +42,6 @@ public class MapManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Kayıtlı currentMap bulunamadı, yeni map yüklenecek.");
                 LoadNextLevel();
                 gameManagerSO.isGameStart = true;
 
@@ -95,8 +100,7 @@ public class MapManager : MonoBehaviour
             if (gameManagerSO.hardLevelMaps.Count > 0)
             {
                 gameManagerSO.currentLevelType = LevelType.Hard;
-                int randomIndex = Random.Range(0, gameManagerSO.hardLevelMaps.Count);
-                return gameManagerSO.hardLevelMaps[randomIndex];
+               return GetUniqueNextMap(gameManagerSO.hardLevelMaps);
             }
         }
 
@@ -105,8 +109,8 @@ public class MapManager : MonoBehaviour
             if (gameManagerSO.normalLevelMaps.Count > 0)
             {
                 gameManagerSO.currentLevelType = LevelType.Normal;
-                int randomIndex = Random.Range(0, gameManagerSO.normalLevelMaps.Count);
-                return gameManagerSO.normalLevelMaps[randomIndex];
+                return GetUniqueNextMap(gameManagerSO.normalLevelMaps);
+
             }
         }
 
@@ -129,6 +133,32 @@ public class MapManager : MonoBehaviour
         }
 
         gameManagerSO.isGameStart = false;
+    }
+
+    private GameObject GetUniqueNextMap(List<GameObject> mapList)
+    {
+        List<GameObject> availableMaps = new List<GameObject>(mapList);
+
+        GameObject currentMap = gameManagerSO.currentMap;
+        if(currentMap != null && availableMaps.Contains(currentMap))
+        {
+            availableMaps.Remove(currentMap);
+        }
+
+        if(availableMaps.Count > 0)
+        {
+            int randomIndex = Random.Range(0,availableMaps.Count);
+            GameObject newMap = availableMaps[randomIndex];
+
+            gameManagerSO.currentMap = newMap;
+
+            return newMap;
+        }
+        else if(currentMap != null)
+        {
+            return currentMap;
+        }
+        return null;
     }
 
     #endregion

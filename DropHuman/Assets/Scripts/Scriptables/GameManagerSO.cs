@@ -66,6 +66,7 @@ public class GameManagerSO : ScriptableObject
     public bool isBombUsed;
     public bool isMagnetUsed;
 
+    //LEVEL DEÐÝÞTÝRÝLEREK HEDÝYELERÝ FARKLI LEVELLERDE DE VEREBÝLÝRÝZ
     [Space(10)]
     public int freezeGiftLevel;
     public int bombGiftLevel;
