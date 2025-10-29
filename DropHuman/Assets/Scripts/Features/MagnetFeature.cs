@@ -6,6 +6,7 @@ public class MagnetFeature : MonoBehaviour
 {
     public GameManagerSO gameManagerSO;
     public GameManager gameManager;
+    public UIManager uiManager;
     public TextMeshProUGUI magnetCountText;
     public float raiseY;
 
@@ -23,13 +24,14 @@ public class MagnetFeature : MonoBehaviour
         {
             originalYPositions[i] = gameManager.blocks[i].transform.position.y;
         }
+
     }
 
     private void Update()
     {
         UpdateMagnetText();
 
-        //magnet kullanımı bittiğinde blokları eski yerine geri getirir
+        //magnet kullanÄ±mÄ± bittiÄŸinde bloklarÄ± eski yerine geri getirir
         if (!gameManagerSO.isMagnetUsed && areBlocksRaised && gameManagerSO.magnetCount>0)
         {
             ResetBlocksPosition();
@@ -37,7 +39,7 @@ public class MagnetFeature : MonoBehaviour
 
         if (!gameManagerSO.isMagnetUsed) return;
 
-        //hangi objeye dokunulduğuna göre işlem yapar
+        //hangi objeye dokunulduï¿½una gÃ¶re iÅŸlem yapar
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -52,7 +54,9 @@ public class MagnetFeature : MonoBehaviour
                     if (gameManagerSO.magnetCount > 0 && tagOfTouchedObject=="Block")
                     {
                         MagnetObjectsFromList();
+                        uiManager.VibrateOnce();
                         gameManagerSO.magnetCount--;
+                        gameManager.SaveFeatures();
                         UpdateMagnetText();
                     }
 
@@ -62,7 +66,7 @@ public class MagnetFeature : MonoBehaviour
         }
     }
 
-    //magnet butonunda kullanılan method
+    //magnet butonunda kullanÄ±lan method
     public void MagnetButtonMethod()
     {
         if (!areBlocksRaised && gameManagerSO.magnetCount>0)
@@ -73,7 +77,7 @@ public class MagnetFeature : MonoBehaviour
         gameManagerSO.isMagnetUsed = true;
     }
 
-    //Blokları yerden yükseltir
+    //BloklarÄ± yerden yÃ¼kseltir
     void RaiseBlocks()
     {
         for (int i = 0; i < gameManager.blocks.Count; i++)
@@ -86,7 +90,7 @@ public class MagnetFeature : MonoBehaviour
         areBlocksRaised = true;
     }
 
-    //Blokların yüksekliklerini sıfırlar
+    //Bloklarï¿½n yÃ¼ksekliklerini sÄ±fÄ±rlar
     void ResetBlocksPosition()
     {
         for (int i = 0; i < gameManager.blocks.Count; i++)
@@ -99,7 +103,7 @@ public class MagnetFeature : MonoBehaviour
         areBlocksRaised = false;
     }
 
-    //Magnetin özelliği burda (aynı renkli objeleri siler)
+    //Magnetin Ã¶zelliÄŸi burda (aynÄ± renkli objeleri siler)
     void MagnetObjectsFromList()
     {
         if (touchedBlock != null && tagOfTouchedObject == "Block")
@@ -121,7 +125,7 @@ public class MagnetFeature : MonoBehaviour
 
     
 
-    //Magnet Textini günceller
+    //Magnet Textini gÃ¼nceller
     void UpdateMagnetText()
     {
         magnetCountText.text = gameManagerSO.magnetCount.ToString();

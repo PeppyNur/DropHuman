@@ -110,15 +110,96 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region DATA SETTINGS
+    
+    public void SaveLife()
+    {
+        PlayerPrefs.SetInt("currentLife", gameManagerSO.currentLife);
+        PlayerPrefs.Save();
+    }
+
+    public void SaveCoin()
+    {
+        PlayerPrefs.SetInt("currentCoin", gameManagerSO.currentCoin);
+        PlayerPrefs.Save();
+    }
+
+    public void SaveLevel()
+    {
+        PlayerPrefs.SetInt("currentLevel", gameManagerSO.currentLevel);
+        PlayerPrefs.SetInt("savedLevel", gameManagerSO.savedLevel);
+        PlayerPrefs.Save();
+    }
+
+    public void SaveMap()
+    {
+        if (gameManagerSO.currentMap != null)
+        {
+            PlayerPrefs.SetString("currentMapName", gameManagerSO.currentMap.name);
+        }
+        else
+        {
+            PlayerPrefs.SetString("currentMapName", "");
+        }
+        PlayerPrefs.Save();
+    }
+
+    public void SaveFeatures()
+    {
+        PlayerPrefs.SetInt("freezeCount", gameManagerSO.freezeCount);
+        PlayerPrefs.SetInt("bombCount", gameManagerSO.bombCount);
+        PlayerPrefs.SetInt("magnetCount", gameManagerSO.magnetCount);
+        PlayerPrefs.Save();
+    }
+
     private void OnApplicationQuit()
     {
         SaveExitTime();
-        SaveData();
+        SaveLife();
+        SaveCoin();
+        SaveLevel();
+        SaveMap();
+        SaveFeatures();
 
         if (gameManagerSO.isGameOver || gameManagerSO.isGameStart || gameManagerSO.isGamePause)
         {
             gameManagerSO.currentLife--;
+            SaveLife();
         }
+    }
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            SaveExitTime();
+            // kritik değişkenleri diske yaz
+            SaveLife();
+            SaveCoin();
+            SaveLevel();
+            SaveMap();
+            SaveFeatures();
+        }
+        else
+        {
+            // geri gelindiğinde sadece çıkış saatini sıfırla
+            SaveExitTime();
+        }
+    }
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus)
+        {
+            SaveExitTime();
+            SaveLife();
+            SaveCoin();
+            SaveLevel();
+            SaveMap();
+            SaveFeatures();
+        }
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
+        Debug.Log("QUIT");
     }
     public void SaveExitTime()
     {
@@ -139,56 +220,73 @@ public class GameManager : MonoBehaviour
 
         return (float)timePassed.TotalSeconds;
     }
-
-    public void SaveData()
-    {
-        // ==================== LIFE SETTINGS ====================
-        PlayerPrefs.SetInt("currentLife",gameManagerSO.currentLife);
-
-        // ==================== MAP SETTINGS ====================
-        PlayerPrefs.SetString("currentMapName",gameManagerSO.currentMap.name);
-        PlayerPrefs.SetInt("currentLevel",gameManagerSO.currentLevel);
-
-        // ==================== COIN SETTINGS ====================
-        PlayerPrefs.SetInt("currentCoin",gameManagerSO.currentCoin);
-
-        // ==================== GAME STATE ====================
-        PlayerPrefs.SetInt("isVibrating",gameManagerSO.isVibrating ?  1 : 0);
-        PlayerPrefs.SetInt("isSoundOn", gameManagerSO.isSoundOn ? 1 : 0);
-
-        // ==================== FEATURE SETTINGS ====================
-        PlayerPrefs.SetInt("freezeCount", gameManagerSO.freezeCount);
-        PlayerPrefs.SetInt("bombCount", gameManagerSO.bombCount);
-        PlayerPrefs.SetInt("magnetCount",gameManagerSO.magnetCount);
-
-        PlayerPrefs.SetInt("freezeGiftLevel",gameManagerSO.freezeGiftLevel);
-        PlayerPrefs.SetInt("bombGiftLevel",gameManagerSO.bombGiftLevel);
-        PlayerPrefs.SetInt("magnetGiftLevel", gameManagerSO.bombGiftLevel);
-
-        PlayerPrefs.Save();
-        Debug.Log("DATA SAVED");
-
-    }
-
     public void LoadData()
     {
         // ==================== LIFE SETTINGS ====================
-        gameManagerSO.currentLife = PlayerPrefs.GetInt("currentLife",gameManagerSO.currentLife);
+        if (PlayerPrefs.HasKey("currentLife"))
+        {
+            gameManagerSO.currentLife = PlayerPrefs.GetInt("currentLife", gameManagerSO.currentLife);
+        }
 
         // ==================== COIN SETTINGS ====================
-        gameManagerSO.currentCoin = PlayerPrefs.GetInt("currentCoin", gameManagerSO.currentCoin);
+        if (PlayerPrefs.HasKey("currentCoin"))
+        {
+            gameManagerSO.currentCoin = PlayerPrefs.GetInt("currentCoin", gameManagerSO.currentCoin);
+        }
+
+        // ==================== LEVEL SETTINGS ====================
+        if (PlayerPrefs.HasKey("currentLevel"))
+        {
+            gameManagerSO.currentLevel = PlayerPrefs.GetInt("currentLevel", gameManagerSO.currentLevel);
+        }
+        if (PlayerPrefs.HasKey("savedLevel"))
+        {
+            gameManagerSO.savedLevel = PlayerPrefs.GetInt("savedLevel", gameManagerSO.savedLevel);
+        }
 
         // ==================== GAME STATE ====================
-        gameManagerSO.isVibrating = PlayerPrefs.GetInt("isVibrating", 1)==1;
-        gameManagerSO.isSoundOn = PlayerPrefs.GetInt("isSoundOn", 1) == 1;
+        if (PlayerPrefs.HasKey("isSoundOn"))
+        {
+            gameManagerSO.isSoundOn = PlayerPrefs.GetInt("isSoundOn", 1) == 1;
+        }
+
+        if (PlayerPrefs.HasKey("isVibrating"))
+        {
+            gameManagerSO.isVibrating = PlayerPrefs.GetInt("isVibrating", 1) == 1;
+        }
 
         // ==================== FEATURE SETTINGS ====================
-        gameManagerSO.freezeCount = PlayerPrefs.GetInt("freezeCount", gameManagerSO.freezeCount);
-        gameManagerSO.bombCount = PlayerPrefs.GetInt("bombCount",gameManagerSO.bombCount);
-        gameManagerSO.magnetCount = PlayerPrefs.GetInt("magnetCount",gameManagerSO.magnetCount);
+        if (PlayerPrefs.HasKey("freezeCount"))
+        {
+            gameManagerSO.freezeCount = PlayerPrefs.GetInt("freezeCount", gameManagerSO.freezeCount);
+        }
+
+        if (PlayerPrefs.HasKey("bombCount"))
+        {
+            gameManagerSO.bombCount = PlayerPrefs.GetInt("bombCount", gameManagerSO.bombCount);
+        }
+
+        if (PlayerPrefs.HasKey("magnetCount"))
+        {
+            gameManagerSO.magnetCount = PlayerPrefs.GetInt("magnetCount", gameManagerSO.magnetCount);
+        }
+
+        if (PlayerPrefs.HasKey("freezeGiftLevel"))
+        {
+            gameManagerSO.freezeGiftLevel = PlayerPrefs.GetInt("freezeGiftLevel", gameManagerSO.freezeGiftLevel);
+        }
+
+        if (PlayerPrefs.HasKey("bombGiftLevel"))
+        {
+            gameManagerSO.bombGiftLevel = PlayerPrefs.GetInt("bombGiftLevel", gameManagerSO.bombGiftLevel);
+        }
+        if (PlayerPrefs.HasKey("magnetGiftLevel"))
+        {
+            gameManagerSO.magnetGiftLevel = PlayerPrefs.GetInt("magnetGiftLevel", gameManagerSO.magnetGiftLevel);
+        }
+
 
         // ==================== MAP SETTINGS ====================
-
         string currentMapName = PlayerPrefs.GetString("currentMapName", "");
         if(!string.IsNullOrEmpty(currentMapName))
         {

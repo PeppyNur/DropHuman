@@ -18,6 +18,7 @@ public class MapManager : MonoBehaviour
         if (gameManagerSO.currentLevel == 0)
         {
             gameManagerSO.currentMap=null;
+            gameManager.SaveMap();
         }
     }
     #region MAP GENERATOR
@@ -31,6 +32,7 @@ public class MapManager : MonoBehaviour
         if (gameManagerSO.savedLevel > 0 && gameManagerSO.currentLife > 0)
         {
             gameManagerSO.currentLevel = gameManagerSO.savedLevel;
+            gameManager.SaveLevel();
 
             if (gameManagerSO.currentMap != null)
             {
@@ -70,6 +72,8 @@ public class MapManager : MonoBehaviour
                     // Mevcut map ve level bilgilerini kaydeder
                     gameManagerSO.currentMap = nextMapPrefab;
                     gameManagerSO.savedLevel = gameManagerSO.currentLevel;
+                    gameManager.SaveLevel();
+                    gameManager.SaveMap();
 
                     gameManagerSO.SetTimerByLevelType();
                     gameManagerSO.isGameStart = true;
@@ -84,6 +88,7 @@ public class MapManager : MonoBehaviour
         {
             LoadSavedLevel();
         }
+        
     }
 
     // Sıradaki map prefab'ını seviyeye göre belirler
@@ -151,6 +156,7 @@ public class MapManager : MonoBehaviour
             GameObject newMap = availableMaps[randomIndex];
 
             gameManagerSO.currentMap = newMap;
+            gameManager.SaveMap();
 
             return newMap;
         }

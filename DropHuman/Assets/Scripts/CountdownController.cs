@@ -9,11 +9,7 @@ public class CountdownController : MonoBehaviour
     public UIManager uiManager;
     private float timer;
 
-    //s�n�rs�z can modu 
-    public bool unlimitedLifeActive = false;
-    public float unlimitedLifeTimer = 0f;
-    public int lifeAtStartUnlimitedMode = 0;
-    public float unlimitedModeElapsedTime = 0f;
+    // unlimited life modu kaldırıldı
 
     private void Start()
     {
@@ -26,6 +22,11 @@ public class CountdownController : MonoBehaviour
         if (pause)
         {
             gameManager.SaveExitTime();
+            gameManager.SaveLife();
+            gameManager.SaveCoin();
+            gameManager.SaveLevel();
+            gameManager.SaveMap();
+            gameManager.SaveFeatures();
         }
         else
         {
@@ -38,6 +39,11 @@ public class CountdownController : MonoBehaviour
         if (!hasFocus)
         {
             gameManager.SaveExitTime();
+            gameManager.SaveLife();
+            gameManager.SaveCoin();
+            gameManager.SaveLevel();
+            gameManager.SaveMap();
+            gameManager.SaveFeatures();
         }
         else
         {
@@ -47,48 +53,19 @@ public class CountdownController : MonoBehaviour
 
     private void Update()
     {
-        if(unlimitedLifeActive)
+        if(gameManagerSO.currentLife<gameManagerSO.maxLife)
         {
-            unlimitedLifeTimer += Time.deltaTime;
-            unlimitedModeElapsedTime += Time.deltaTime;
-
-            gameManagerSO.currentLife = lifeAtStartUnlimitedMode;
-            uiManager.UpdateLifeUI(gameManagerSO.currentLife, gameManagerSO.maxLife);
-            uiManager.UpdateLifeTimerUI(unlimitedLifeTimer);
-
-            if (unlimitedLifeTimer < 0)
+            timer -= Time.deltaTime;
+            if(timer <= 0)
             {
-                unlimitedLifeActive = false;
-                unlimitedLifeTimer = 0;
-
-                int regenCount = Mathf.FloorToInt(unlimitedModeElapsedTime/(gameManagerSO.lifeCountdown * 60));
-                
-                if(regenCount > 0)
-                    gameManagerSO.currentLife = Mathf.Min(gameManagerSO.currentLife+regenCount, gameManagerSO.maxLife);
-
-                double remainder =unlimitedModeElapsedTime % (gameManagerSO.lifeCountdown*60f);
-                timer = Mathf.Max((float)(gameManagerSO.lifeCountdown*60-remainder), 0);
-                unlimitedModeElapsedTime = 0f;
+                RegenerateLife();
+                timer = gameManagerSO.lifeCountdown * 60f;
             }
+            uiManager.UpdateLifeTimerUI(timer);
         }
-
         else
         {
-            if(gameManagerSO.currentLife<gameManagerSO.maxLife)
-            {
-                timer -= Time.deltaTime;
-                if(timer <= 0)
-                {
-                    RegenerateLife();
-                    timer = gameManagerSO.lifeCountdown * 60f;
-                }
-                uiManager.UpdateLifeTimerUI(timer);
-            }
-            else
-            {
-                uiManager.SetFullLifeText();
-
-            }
+            uiManager.SetFullLifeText();
         }
     }
 
@@ -103,6 +80,7 @@ public class CountdownController : MonoBehaviour
             if (regenCount > 0)
             {
                 gameManagerSO.currentLife = Mathf.Min(gameManagerSO.currentLife + regenCount, gameManagerSO.maxLife);
+                gameManager.SaveLife();
             }
 
             double remainder = offlineSeconds % secondsPerLife;
@@ -129,16 +107,10 @@ public class CountdownController : MonoBehaviour
         if (gameManagerSO.currentLife < gameManagerSO.maxLife)
         {
             gameManagerSO.currentLife += 1;
+            gameManager.SaveLife();
             uiManager.UpdateLifeUI(gameManagerSO.currentLife, gameManagerSO.maxLife);
         }
     }
 
-    public void ActivateUnlimitedLife(float hours)
-    {
-        unlimitedLifeActive = true;
-        unlimitedLifeTimer = hours * 3600f;
-        lifeAtStartUnlimitedMode = gameManagerSO.currentLife;
-        unlimitedModeElapsedTime = 0f;
-        
-    }
+    // unlimited life fonksiyonu kaldırıldı
 }

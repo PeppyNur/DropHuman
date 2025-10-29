@@ -25,6 +25,7 @@ public class Bundle
 public class StoreManager : MonoBehaviour
 {
     public GameManagerSO gameManagerSO;
+    public GameManager gameManager;
     public Bundle[] bundles;
     public UIManager uiManager;
     private void Start()
@@ -50,6 +51,9 @@ public class StoreManager : MonoBehaviour
             gameManagerSO.magnetCount += selectedBundle.buyMagnetCount;
             gameManagerSO.freezeCount += selectedBundle.buyFrozeCount;
 
+            gameManager.SaveCoin();
+            gameManager.SaveLife();
+            gameManager.SaveFeatures();
             uiManager.UpdateCoinUI();
             uiManager.UpdateLifeUI(gameManagerSO.currentLife, gameManagerSO.maxLife);
             uiManager.PlayClickSounds();

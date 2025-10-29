@@ -236,6 +236,7 @@ public class UIManager : MonoBehaviour
             {
                 freezeGiftText.text = gameManagerSO.freezeGiftCount.ToString();
                 gameManagerSO.freezeCount += gameManagerSO.freezeGiftCount;
+                gameManager.SaveFeatures();
 
                 frozeGiftPanel.SetActive(true);
                 gameManagerSO.IsFreezeFeatureGifted = true;
@@ -249,6 +250,7 @@ public class UIManager : MonoBehaviour
             {
                 bombGiftText.text = gameManagerSO.bombGiftCount.ToString();
                 gameManagerSO.bombCount += gameManagerSO.bombGiftCount;
+                gameManager.SaveFeatures();
 
                 bombGiftPanel.SetActive(true);
                 gameManagerSO.isBombFeatureGifted = true;
@@ -262,6 +264,7 @@ public class UIManager : MonoBehaviour
             {
                 magnetGiftText.text = gameManagerSO.magnetGiftCount.ToString();
                 gameManagerSO.magnetCount += gameManagerSO.magnetGiftCount;
+                gameManager.SaveFeatures();
 
                 magnetGiftPanel.SetActive(true);
                 gameManagerSO.isMagnetFeatureGifted = true;
@@ -340,17 +343,16 @@ public class UIManager : MonoBehaviour
         levelText.text = (gameManagerSO.currentLevel + 1).ToString();
     }
 
-    // Bir can azaltır ve UI’ı günceller
+    // Bir can azaltır ve UI'ı günceller
     public void DecreaseLifeCount()
     {
         if (gameManagerSO.currentLife > 0)
         {
             gameManagerSO.currentLife--;
+            gameManager.SaveLife();
             lifeCountText.text = gameManagerSO.currentLife.ToString();
         }
     }
-
-   
 
     #endregion
 
@@ -376,6 +378,7 @@ public class UIManager : MonoBehaviour
         }
 
         gameManagerSO.currentCoin += rewardAmount;
+        gameManager.SaveCoin();
         return rewardAmount;
     }
 
@@ -413,6 +416,7 @@ public class UIManager : MonoBehaviour
         if (gameManagerSO.currentCoin >= gameManagerSO.reviveCoin)
         {
             gameManagerSO.currentCoin -= gameManagerSO.reviveCoin;
+            gameManager.SaveCoin();
             inGamePanel.SetActive(true);
             gameManager.AddPlayTime();
             ContinueGame();
@@ -488,6 +492,7 @@ public class UIManager : MonoBehaviour
             revivePanel.SetActive(false);
 
             gameManagerSO.currentLevel++;
+            gameManager.SaveLevel();
             GiftPanel();
             gameManagerSO.SetTimerByLevelType();
 
@@ -500,6 +505,7 @@ public class UIManager : MonoBehaviour
 
             gameManagerSO.isGameStart = false;
             gameManagerSO.currentMap=null;
+            gameManager.SaveMap();
         }
     }
 

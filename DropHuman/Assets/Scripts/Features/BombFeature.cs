@@ -6,6 +6,7 @@ public class BombFeature : MonoBehaviour
 {
     public GameManagerSO gameManagerSO;
     public GameManager gameManager;
+    public UIManager uiManager;
     public TextMeshProUGUI bombCountText;
     public float raiseY;
 
@@ -24,7 +25,7 @@ public class BombFeature : MonoBehaviour
 
         if (!gameManagerSO.isBombUsed) return;
 
-        // Dokunma kontrolü
+        // Dokunma kontrolï¿½
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -39,7 +40,9 @@ public class BombFeature : MonoBehaviour
                     if (gameManagerSO.bombCount > 0 && tagOfTouchedObject == "FallingObject")
                     {
                         BombSphere(touchedObject);
+                        uiManager.VibrateOnce();
                         gameManagerSO.bombCount--;
+                        gameManager.SaveFeatures();
                         UpdateBombText();
                     }
 
@@ -49,7 +52,7 @@ public class BombFeature : MonoBehaviour
         }
     }
 
-    // Bomb butonuna basýldýðýnda çaðrýlýr
+    // Bomb butonuna basï¿½ldï¿½ï¿½ï¿½nda ï¿½aï¿½rï¿½lï¿½r
     public void BombButtonMethod()
     {
         UpdateBombText();
@@ -63,7 +66,7 @@ public class BombFeature : MonoBehaviour
         gameManagerSO.isBombUsed = true;
     }
 
-    // Sahnedeki tüm FallingObject tag'li objeleri listeler
+    // Sahnedeki tï¿½m FallingObject tag'li objeleri listeler
     void SphereObjectsFromScene()
     {
         fallingObjects.Clear();
@@ -81,7 +84,7 @@ public class BombFeature : MonoBehaviour
         }
     }
 
-    // Objeleri yükseltir
+    // Objeleri yï¿½kseltir
     void RaiseSpheres()
     {
         for (int i = 0; i < fallingObjects.Count; i++)
@@ -94,7 +97,7 @@ public class BombFeature : MonoBehaviour
         areSpheresRaised = true;
     }
 
-    // Objeleri eski y pozisyonlarýna getirir
+    // Objeleri eski y pozisyonlarï¿½na getirir
     void ResetSpherePosition()
     {
         for (int i = 0; i < fallingObjects.Count; i++)
@@ -132,7 +135,7 @@ public class BombFeature : MonoBehaviour
     }
 
 
-    // Bomb sayýsýný UI'ye güncelle
+    // Bomb sayï¿½sï¿½nï¿½ UI'ye gï¿½ncelle
     void UpdateBombText()
     {
         bombCountText.text = gameManagerSO.bombCount.ToString();
