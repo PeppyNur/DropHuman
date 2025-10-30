@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSize: 1
   fixedY: 0.25
-  overlapTolerance: 0.05
+  overlapTolerance: 0.001
   checkLayer:
     serializedVersion: 2
     m_Bits: 320
@@ -130,6 +130,7 @@ MonoBehaviour:
   spawnPoints: []
   objects: []
   blockCounterText: {fileID: 1783254852809509820}
+  uiManager: {fileID: 0}
   rendererOfChild: {fileID: 0}
   animator: {fileID: 8612071353078756863}
   overAnimationName: fallAnim2

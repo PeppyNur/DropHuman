@@ -38,6 +38,7 @@ public class MapManager : MonoBehaviour
             {
                 ClearCurrentMap();
 
+                UniqueColorRegistry.ResetAll();
                 currentMapInstance = Instantiate(gameManagerSO.currentMap, Vector3.zero, Quaternion.identity);
                 gameManagerSO.SetTimerByLevelType();
                 gameManagerSO.isGameStart = true;
@@ -67,8 +68,8 @@ public class MapManager : MonoBehaviour
 
                 if (nextMapPrefab != null)
                 {
+                    UniqueColorRegistry.ResetAll();
                     currentMapInstance = Instantiate(nextMapPrefab, Vector3.zero, Quaternion.identity);
-
                     // Mevcut map ve level bilgilerini kaydeder
                     gameManagerSO.currentMap = nextMapPrefab;
                     gameManagerSO.savedLevel = gameManagerSO.currentLevel;

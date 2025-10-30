@@ -15,26 +15,33 @@ MonoBehaviour:
   currentLevelType: 1
   currentLevel: 0
   savedLevel: 0
-  trainingLevelTimer: 10
-  normalLevelTimer: 20
-  hardLevelTimer: 30
+  trainingLevelTimer: 25
+  normalLevelTimer: 40
+  hardLevelTimer: 60
   currentLevelTimer: 0
-  addReviveTimer: 500
+  addReviveTimer: 20
   lifeCountdown: 15
-  currentLife: 841
+  currentLife: 5
   maxLife: 5
-  currentMap: {fileID: 6930842634887389001, guid: c3c15b0d4d160be4481924d0291b1d1f, type: 3}
+  currentMap: {fileID: 0}
   trainingLevelMaps:
-  - {fileID: 6930842634887389001, guid: c3c15b0d4d160be4481924d0291b1d1f, type: 3}
-  - {fileID: 6930842634887389001, guid: c3c15b0d4d160be4481924d0291b1d1f, type: 3}
+  - {fileID: 3505565466040381491, guid: e1e02d0291392b645a6f0651803f4bd7, type: 3}
+  - {fileID: 8792125936769928254, guid: 54060ac5de59b9f42b6685745b731906, type: 3}
+  - {fileID: 3760133360850455214, guid: 0ba7ddbf697cc7b468cef07454ffb51f, type: 3}
   normalLevelMaps:
-  - {fileID: 6930842634887389001, guid: c3c15b0d4d160be4481924d0291b1d1f, type: 3}
+  - {fileID: 7124549511927976647, guid: 437f239661902f1468e55d3ef042ff82, type: 3}
+  - {fileID: 2325541472724141498, guid: 05a2755fb4f929c4e85741c4c54d5e0d, type: 3}
+  - {fileID: 1780733889049199347, guid: 62d672f384cfbed4ebd93ba14b61e749, type: 3}
+  - {fileID: 2702132247905395720, guid: c4872c0fc20e9f44cba4e2cb1b781832, type: 3}
+  - {fileID: 3806108746196049397, guid: 448d1246333b1a64585974415ed76166, type: 3}
   hardLevelMaps:
-  - {fileID: 6930842634887389001, guid: c3c15b0d4d160be4481924d0291b1d1f, type: 3}
-  currentCoin: 160
-  trainingLevelCoin: 10
-  normalLevelCoin: 20
-  hardLevelCoin: 30
+  - {fileID: 4943666280956745513, guid: 152b3cd65a08f094fa34bf07117d86ed, type: 3}
+  - {fileID: 7847451417910508807, guid: c135af09d2a1a7b47969b340a704dba4, type: 3}
+  - {fileID: 5811717125938766321, guid: 309c450a31538a44aa6902757cfa132b, type: 3}
+  currentCoin: 0
+  trainingLevelCoin: 20
+  normalLevelCoin: 40
+  hardLevelCoin: 60
   reviveCoin: 200
   isGameOver: 0
   isGameWin: 0

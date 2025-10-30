@@ -5,6 +5,7 @@ public static class UniqueColorRegistry
 {
 	private static readonly Dictionary<int, Queue<Material>> soIdToMaterialQueue = new Dictionary<int, Queue<Material>>();
 	private static readonly Dictionary<int, int> soIdToAssignedCount = new Dictionary<int, int>();
+    private static readonly HashSet<int> warnedOverflowSoIds = new HashSet<int>();
 
 	public static Material GetUniqueMaterial(ColorMaterialsSO colorSo)
 	{
@@ -37,25 +38,50 @@ public static class UniqueColorRegistry
 			soIdToAssignedCount[soId] = 0;
 		}
 
-		// If we have already assigned more blocks than materials, duplicates are unavoidable.
-		// We still cycle deterministically while warning once when overflow happens.
-		if (soIdToAssignedCount[soId] >= colorSo.blockColors.Count && soIdToAssignedCount[soId] % colorSo.blockColors.Count == 0)
+        // If we have already assigned more blocks than materials, duplicates are unavoidable.
+        // Warn once per SO when overflow happens.
+        if (soIdToAssignedCount[soId] >= colorSo.blockColors.Count && !warnedOverflowSoIds.Contains(soId))
 		{
-			Debug.LogWarning("UniqueColorRegistry: More blocks than available unique materials. Colors will repeat.");
+            Debug.LogWarning("UniqueColorRegistry: More blocks than available unique materials. Colors will repeat.");
+            warnedOverflowSoIds.Add(soId);
 		}
 
-		if (queue.Count == 0)
+        if (queue.Count == 0)
 		{
-			// Refill to continue cycling when there are more blocks than materials
-			foreach (Material m in colorSo.blockColors)
-			{
-				queue.Enqueue(m);
-			}
+            // Refill with a reshuffled order to avoid repeating patterns
+            List<Material> reshuffled = new List<Material>(colorSo.blockColors);
+            for (int i = reshuffled.Count - 1; i > 0; i--)
+            {
+                int j = Random.Range(0, i + 1);
+                Material tmp = reshuffled[i];
+                reshuffled[i] = reshuffled[j];
+                reshuffled[j] = tmp;
+            }
+            foreach (Material m in reshuffled)
+            {
+                queue.Enqueue(m);
+            }
 		}
 
 		Material selected = queue.Dequeue();
 		soIdToAssignedCount[soId]++;
 		return selected;
 	}
+
+    public static void Reset(ColorMaterialsSO colorSo)
+    {
+        if (colorSo == null) return;
+        int soId = colorSo.GetInstanceID();
+        soIdToMaterialQueue.Remove(soId);
+        soIdToAssignedCount.Remove(soId);
+        warnedOverflowSoIds.Remove(soId);
+    }
+
+    public static void ResetAll()
+    {
+        soIdToMaterialQueue.Clear();
+        soIdToAssignedCount.Clear();
+        warnedOverflowSoIds.Clear();
+    }
 }
 

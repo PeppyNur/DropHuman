@@ -316,4 +316,48 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+
+    #region DEBUG/TOOLS
+    // UI butonuna bağlayın: Tüm PlayerPrefs kayıtlarını siler ve oyun durumunu başlangıca çeker
+    public void ResetPlayerPrefsAndState()
+    {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+
+        // Bellekteki durumu da güvenli bir başlangıca al
+        gameManagerSO.currentMap = null;
+        gameManagerSO.currentLevel = 0;
+        gameManagerSO.savedLevel = 0;
+
+        gameManagerSO.isGameStart = false;
+        gameManagerSO.isGameWin = false;
+        gameManagerSO.isGamePause = false;
+        gameManagerSO.isGameOver = false;
+
+        gameManagerSO.isFrozenUsed = false;
+        gameManagerSO.isBombUsed = false;
+        gameManagerSO.isMagnetUsed = false;
+
+        gameManagerSO.isBombFeatureGifted = false;
+        gameManagerSO.IsFreezeFeatureGifted = false;
+        gameManagerSO.isMagnetFeatureGifted = false;
+
+        gameManagerSO.bombCount = 0;
+        gameManagerSO.freezeCount = 0;
+        gameManagerSO.magnetCount = 0;
+        gameManagerSO.currentLife = 5;
+        gameManagerSO.currentCoin = 0;
+
+        // Süreyi seviye tipine göre yenile (varsayılan tip ne ise ona göre ayarlanır)
+        gameManagerSO.SetTimerByLevelType();
+
+        // UI tarafına temel güncellemeler (opsiyonel/minimal)
+        if (uiManager != null)
+        {
+            uiManager.UpdateTimerText();
+        }
+
+        Debug.Log("PlayerPrefs cleared and in-memory state reset.");
+    }
+    #endregion
 }
